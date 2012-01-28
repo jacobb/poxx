@@ -1,8 +1,0 @@
-poxx.py
-setup.py
-poxx.egg-info/PKG-INFO
-poxx.egg-info/SOURCES.txt
-poxx.egg-info/dependency_links.txt
-poxx.egg-info/not-zip-safe
-poxx.egg-info/requires.txt
-poxx.egg-info/top_level.txt
