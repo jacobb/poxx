@@ -10,5 +10,5 @@ Why Fork
 ========
 
 #) I wanted to add something to allow for CSS'd upper-case text to be clearly marked as translated
-#) I wanted an easy installable url for multiple virtualenvs.
+#) I wanted an easy pip-able url for multiple virtualenvs.
 
