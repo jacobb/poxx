@@ -1,4 +1,5 @@
- .po file so we English-bound can see what strings aren't marked 
+#!/usr/bin/env python
+"""Munge a .po file so we English-bound can see what strings aren't marked 
 for translation yet.
 
 Run this with a .po file as an argument.  It will set the translated strings 
@@ -12,6 +13,7 @@ translated strings, and normal case for strings that still need translating.
 This code is in the public domain.
 
 """
+
 
 import re, sys
 import polib    # from http://bitbucket.org/izi/polib
