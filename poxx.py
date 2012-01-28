@@ -1,11 +1,12 @@
 #!/usr/bin/env python
-"""Munge a .po file so we English-bound can see what strings aren't marked 
+# This Python file uses the following encoding: utf-8
+"""Munge a .po file so we English-bound can see what strings aren't marked
 for translation yet.
 
-Run this with a .po file as an argument.  It will set the translated strings 
+Run this with a .po file as an argument.  It will set the translated strings
 to be the same as the English, but with vowels in the wrong case:
 
-    ./poxx.py locale/xx/LC_MESSAGES/django.po    
+    ./poxx.py locale/xx/LC_MESSAGES/django.po
 
 Then set LANGUAGE_CODE='xx' in settings.py, and you'll see wacky case for
 translated strings, and normal case for strings that still need translating.
@@ -15,11 +16,18 @@ This code is in the public domain.
 """
 
 
-import re, sys
+import re
+import sys
 import polib    # from http://bitbucket.org/izi/polib
 import HTMLParser
 
+
 class HtmlAwareMessageMunger(HTMLParser.HTMLParser):
+
+    # Lifted from http://translate.sourceforge.net
+    ORIGINAL = u"ABCDEFGHIJKLMNOPQRSTUVWXYZ" + u"abcdefghijklmnopqrstuvwxyz"
+    REWRITE_UNICODE_MAP = u"ȦƁƇḒḖƑƓĦĪĴĶĿḾȠǾƤɊŘŞŦŬṼẆẊẎẐ" + u"ȧƀƈḓḗƒɠħīĵķŀḿƞǿƥɋřşŧŭṽẇẋẏẑ"
+
     def __init__(self):
         HTMLParser.HTMLParser.__init__(self)
         self.s = ""
@@ -28,9 +36,15 @@ class HtmlAwareMessageMunger(HTMLParser.HTMLParser):
         return self.s
 
     def xform(self, s):
-        return re.sub("[aeiouAEIOU]", self.munge_vowel, s)
+
+        # return re.sub("[aeiouAEIOU]", self.munge_vowel, s)
+        return re.sub("[A-Za-z]", self.munge_unicode, s)
+
+    def munge_unicode(self, x):
+        return self.REWRITE_UNICODE_MAP[self.ORIGINAL.find(x.group(0))]
 
     def munge_vowel(self, v):
+        "Kept for historical reasons"
         v = v.group(0)
         if v.isupper():
             return v.lower()
@@ -74,6 +88,7 @@ class HtmlAwareMessageMunger(HTMLParser.HTMLParser):
     def handle_entityref(self, name):
         self.s += "&" + name + ";"
 
+
 def munge_one_file(fname):
     po = polib.pofile(fname)
     count = 0
@@ -82,7 +97,7 @@ def munge_one_file(fname):
         hamm.feed(entry.msgid)
         entry.msgstr = hamm.result()
         if 'fuzzy' in entry.flags:
-            entry.flags.remove('fuzzy') # clear the fuzzy flag
+            entry.flags.remove('fuzzy')  # clear the fuzzy flag
         count += 1
     print "Munged %d messages in %s" % (count, fname)
     po.save()
