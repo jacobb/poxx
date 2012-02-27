@@ -29,12 +29,15 @@ Flags
 -----
 .. _canonical_flag:
 **-c <canonical_po_file>, --canonaical=<canonical_po_file>**
+
 Specify a .po file to use as a canonical source of translations. If specified, poxx will look to see if a msgid is in the canonical_po file before stubbing it out. If it is, the corresponding msgstr will be used instead of the stub string.
 
 **--diff, -d**
+
 Must be used with ``canonical_flag``.
 
 Create a diff file containing all msgids found in the specified po file, but not in the ``canonical_po_file``.
 
 **--blank, -b**
+
 Where a msgstr would be stubbed, mark as untranslated instead.
