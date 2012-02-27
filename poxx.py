@@ -16,8 +16,9 @@ This code is in the public domain.
 """
 
 
+import optparse
+import os.path
 import re
-import sys
 import polib    # from http://bitbucket.org/izi/polib
 import HTMLParser
 
@@ -89,19 +90,92 @@ class HtmlAwareMessageMunger(HTMLParser.HTMLParser):
         self.s += "&" + name + ";"
 
 
-def munge_one_file(fname):
+def _get_canonical_value(canonical_po, msgid):
+    if canonical_po is None:
+        return None
+    canonical_entry = canonical_po.find(msgid)
+    return getattr(canonical_entry, 'msgstr', None)
+
+
+def munge_one_file(fname, blank, canon_name=None):
     po = polib.pofile(fname)
+    canonical_po = polib.pofile(canon_name) if canon_name else None
+
     count = 0
     for entry in po:
-        hamm = HtmlAwareMessageMunger()
-        hamm.feed(entry.msgid)
-        entry.msgstr = hamm.result()
-        if 'fuzzy' in entry.flags:
-            entry.flags.remove('fuzzy')  # clear the fuzzy flag
+        canonical_value = _get_canonical_value(canonical_po, entry.msgid)
+
+        if canonical_value:
+            entry.msgstr = canonical_value
+        elif blank:
+            entry.msgstr = ''
+        else:
+            hamm = HtmlAwareMessageMunger()
+            hamm.feed(entry.msgid)
+            entry.msgstr = hamm.result()
+
+            if 'fuzzy' in entry.flags:
+                entry.flags.remove('fuzzy')  # clear the fuzzy flag
         count += 1
-    print "Munged %d messages in %s" % (count, fname)
+
     po.save()
 
+    return "Munged %d messages in %s" % (count, fname)
+
+
+def diff_one_file(fname, canon_name):
+    po = polib.pofile(fname)
+    canonical_po = polib.pofile(canon_name)
+    diff_po = polib.POFile()
+    po.merge(canonical_po)
+
+    # msgids in the def. po file with no cananonical definition are
+    # marked as obsolute after a merge
+    for entry in po.obsolete_entries():
+        entry.msgstr = ''
+        entry.obsolete = False
+        diff_po.append(entry)
+
+    # Add any msgids that are untranslated in the
+    # canonical catalog as well
+    for entry in canonical_po.untranslated_entries():
+        print entry.msgid
+        entry.msgstr = ''
+        diff_po.append(entry)
+
+    full_fname_path = os.path.abspath(fname)
+    fname_dir = os.path.dirname(full_fname_path)
+    fname_name = os.path.basename(full_fname_path).replace('.po', '')  # no extension
+    diff_po_path = os.path.join(fname_dir, '%s_diff.po' % fname_name)
+    diff_po.save(diff_po_path)
+
+
 if __name__ == "__main__":
-    for fname in sys.argv[1:]:
-        munge_one_file(fname)
+    p = optparse.OptionParser()
+
+    p.add_option('--canonical', '-c',
+        help="replace msgids from canonical .po file",
+        dest='canonical_po_file')
+    p.add_option(
+        '--diff', '-d',
+        action='store_true',
+        dest='diff',
+        help='create a po file with msgids not translated in canonical po file')
+    p.add_option('--blank', '-b',
+        help="mark as untranslated where a msgstr would be munged",
+        action='store_true',
+        dest='blank')
+
+    options, po_files = p.parse_args()
+
+    for fname in po_files:
+        if options.diff and not options.canonical_po_file:
+            raise ValueError('--canonical is required when creating a diff')
+
+        if options.diff:
+            diff_one_file(fname, options.canonical_po_file)
+            report_msg = ''
+        else:
+            report_msg = munge_one_file(fname, options.blank, canon_name=options.canonical_po_file)
+
+    print report_msg
