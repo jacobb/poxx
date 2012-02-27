@@ -14,7 +14,7 @@ Why Fork
 
 How is it different than the original?
 ======================================
-* Flags have been added for working with data that needs to be partially stubbed out. See :ref:`flags` for more information
+* Flags have been added for working with data that needs to be partially stubbed out. See ``flags`` for more information
 * A bit of code lifted from http://translate.sourceforge.net now "translates" msgids into a unicode-character equivilient. This preserves case and allows for CSS-controled casing to be clearly marked as translated.
 
 
@@ -32,7 +32,7 @@ Flags
 Specify a .po file to use as a canonical source of translations. If specified, poxx will look to see if a msgid is in the canonical_po file before stubbing it out. If it is, the corresponding msgstr will be used instead of the stub string.
 
 **--diff, -d**
-Must be used with :ref:`canonical_flag`.
+Must be used with ``canonical_flag``.
 
 Create a diff file containing all msgids found in the specified po file, but not in the ``canonical_po_file``.
 
