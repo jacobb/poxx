@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
+from poxx import version, VERSION_STR
 
-version = (1, 0, 0)
 
 install_requires = [
     'polib',
@@ -9,7 +9,7 @@ install_requires = [
 
 setup(
     name='poxx',
-    version='1.0',
+    version=VERSION_STR,
     author='Ned Batchelder, Package by Jacob Burch',
     author_email='jacobburch@revsys.com',
     url='http://github.com/jacobb/poxx',

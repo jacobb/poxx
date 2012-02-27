@@ -23,6 +23,10 @@ import polib    # from http://bitbucket.org/izi/polib
 import HTMLParser
 
 
+version = (1, 1, 0)
+VERSION_STR = '.'.join(str(v) for v in (1,1,0))
+
+
 class HtmlAwareMessageMunger(HTMLParser.HTMLParser):
 
     # Lifted from http://translate.sourceforge.net
@@ -151,7 +155,9 @@ def diff_one_file(fname, canon_name):
 
 
 if __name__ == "__main__":
-    p = optparse.OptionParser()
+    p = optparse.OptionParser(
+        usage='%prog <po_file> [<another_po_file, ..] [-d] [-c] [-b]',
+        version='%prog ' + VERSION_STR)
 
     p.add_option('--canonical', '-c',
         help="replace msgids from canonical .po file",
