@@ -139,7 +139,6 @@ def diff_one_file(fname, canon_name):
     # Add any msgids that are untranslated in the
     # canonical catalog as well
     for entry in canonical_po.untranslated_entries():
-        print entry.msgid
         entry.msgstr = ''
         diff_po.append(entry)
 
@@ -148,6 +147,7 @@ def diff_one_file(fname, canon_name):
     fname_name = os.path.basename(full_fname_path).replace('.po', '')  # no extension
     diff_po_path = os.path.join(fname_dir, '%s_diff.po' % fname_name)
     diff_po.save(diff_po_path)
+    return "Created %s with %s translations" % (diff_po_path, len(diff_po))
 
 
 if __name__ == "__main__":
@@ -173,8 +173,7 @@ if __name__ == "__main__":
             raise ValueError('--canonical is required when creating a diff')
 
         if options.diff:
-            diff_one_file(fname, options.canonical_po_file)
-            report_msg = ''
+            report_msg = diff_one_file(fname, options.canonical_po_file)
         else:
             report_msg = munge_one_file(fname, options.blank, canon_name=options.canonical_po_file)
 
