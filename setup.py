@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
-from poxx import version, VERSION_STR
-
+version = (1, 1, 0)
+VERSION_STR = '.'.join(str(v) for v in (1,1,0))
 
 install_requires = [
     'polib',

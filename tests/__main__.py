@@ -77,7 +77,7 @@ class TestMungePoFile(PoxxTestCase):
         self.assertEqual(2, untranslated_count)
 
 
-class DiffTestCase(PoxxTestCase):\
+class DiffTestCase(PoxxTestCase):
 
     def setUp(self):
         super(DiffTestCase, self).setUp()

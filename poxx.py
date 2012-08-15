@@ -23,10 +23,6 @@ import polib    # from http://bitbucket.org/izi/polib
 import HTMLParser
 
 
-version = (1, 1, 0)
-VERSION_STR = '.'.join(str(v) for v in (1,1,0))
-
-
 class HtmlAwareMessageMunger(HTMLParser.HTMLParser):
 
     # Lifted from http://translate.sourceforge.net
