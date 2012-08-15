@@ -22,6 +22,8 @@ import re
 import polib    # from http://bitbucket.org/izi/polib
 import HTMLParser
 
+VERSION_STR = '1.1.1'
+
 
 class HtmlAwareMessageMunger(HTMLParser.HTMLParser):
 
