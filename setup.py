@@ -7,6 +7,8 @@ install_requires = [
     'polib',
 ]
 
+test_requires = ['pytest']
+
 setup(
     name='poxx',
     version=VERSION_STR,
@@ -18,6 +20,7 @@ setup(
     packages=find_packages(),
     zip_safe=False,
     install_requires=install_requires,
+    test_requires=test_requires,
     license='BSD',
     include_package_data=True,
     scripts=['poxx.py'],

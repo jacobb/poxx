@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # This Python file uses the following encoding: utf-8
 
 import os
@@ -109,7 +108,3 @@ class DiffTestCase(PoxxTestCase):
 
         # make sure we only created a diff and didn't alter the original
         self.assertEqual(sample_pofile, self.sample_po)
-
-
-if __name__ == '__main__':
-    unittest.main()
