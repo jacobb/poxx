@@ -78,7 +78,7 @@ class HtmlAwareMessageMunger(HTMLParser.HTMLParser):
     def handle_data(self, data):
         # We don't want to munge placeholders, so split on them, keeping them
         # in the list, then xform every other token.
-        toks = re.split(r"(%\(\w+\)s)", data)
+        toks = re.split(r"(%(?:\(\w+\))?s)", data)
         for i, tok in enumerate(toks):
             if i % 2:
                 self.s += tok
