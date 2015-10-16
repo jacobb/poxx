@@ -5,6 +5,7 @@ VERSION_STR = '.'.join(str(v) for v in (1,1,0))
 
 install_requires = [
     'polib',
+    'six',
 ]
 
 test_requires = ['pytest']

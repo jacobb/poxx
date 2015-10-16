@@ -20,7 +20,7 @@ import optparse
 import os.path
 import re
 import polib    # from http://bitbucket.org/izi/polib
-import HTMLParser
+from six.moves import html_parser as HTMLParser
 
 VERSION_STR = '1.1.1'
 
@@ -181,4 +181,4 @@ if __name__ == "__main__":
         else:
             report_msg = munge_one_file(fname, options.blank, canon_name=options.canonical_po_file)
 
-    print report_msg
+    print(report_msg)
