@@ -79,12 +79,12 @@ class TestMungePoFile(PoxxTestCase):
 class DiffTestCase(PoxxTestCase):
 
     def setUp(self):
-        super(DiffTestCase, self).setUp()
+        super().setUp()
         self.diff_path = os.path.join(self.data_path, 'sample_diff.po')
 
     def tearDown(self):
 
-        super(DiffTestCase, self).tearDown()
+        super().tearDown()
 
         # Clean up a diff file if the test created one
         if os.path.isfile(self.diff_path):

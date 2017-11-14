@@ -20,19 +20,18 @@ import optparse
 import os.path
 import re
 import polib    # from http://bitbucket.org/izi/polib
-import HTMLParser
+from html.parser import HTMLParser
+VERSION_STR = '2.0.0'
 
-VERSION_STR = '1.1.1'
 
-
-class HtmlAwareMessageMunger(HTMLParser.HTMLParser):
+class HtmlAwareMessageMunger(HTMLParser):
 
     # Lifted from http://translate.sourceforge.net
     ORIGINAL = u"ABCDEFGHIJKLMNOPQRSTUVWXYZ" + u"abcdefghijklmnopqrstuvwxyz"
     REWRITE_UNICODE_MAP = u"ȦƁƇḒḖƑƓĦĪĴĶĿḾȠǾƤɊŘŞŦŬṼẆẊẎẐ" + u"ȧƀƈḓḗƒɠħīĵķŀḿƞǿƥɋřşŧŭṽẇẋẏẑ"
 
     def __init__(self):
-        HTMLParser.HTMLParser.__init__(self)
+        super().__init__()
         self.s = ""
 
     def result(self):
@@ -180,5 +179,3 @@ if __name__ == "__main__":
             report_msg = diff_one_file(fname, options.canonical_po_file)
         else:
             report_msg = munge_one_file(fname, options.blank, canon_name=options.canonical_po_file)
-
-    print report_msg
