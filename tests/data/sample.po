@@ -32,3 +32,13 @@ msgstr ""
 #: foo.py:47
 msgid "Three"
 msgstr ""
+
+#: foo.py:47
+msgid ""
+"Zero {name} One {confidence:0.2f} Two Three %(qty)0.2f Four %(name)s Five "
+"%(age)d"
+msgstr ""
+
+#: foo.py:47
+msgid "Zero One {age:3s} Two Three"
+msgstr ""
