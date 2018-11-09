@@ -40,7 +40,14 @@ class TestMungePoFile(PoxxTestCase):
         self.assertEqual(munged_pofile[1].msgstr, u'Ǿƞḗ')
         self.assertEqual(munged_pofile[2].msgstr, u'Ŧẇǿ')
         self.assertEqual(munged_pofile[3].msgstr, u'Ŧħřḗḗ')
-
+        self.assertEqual(
+            munged_pofile[4].msgstr,
+            u'Ẑḗřǿ {name} Ǿƞḗ {confidence:0.2f} Ŧẇǿ Ŧħřḗḗ %(qty)0.2f Ƒǿŭř %(name)s Ƒīṽḗ %(age)d',
+        )
+        self.assertEqual(
+            munged_pofile[5].msgstr,
+            u'Ẑḗřǿ Ǿƞḗ {age:3s} Ŧẇǿ Ŧħřḗḗ',
+        )
     def test_blank_munge(self):
         munge_one_file(self.sample_po_path, blank=True)
         munged_pofile = polib.pofile(self.sample_po_path)
@@ -73,7 +80,7 @@ class TestMungePoFile(PoxxTestCase):
         self.assertEqual(munged_pofile[3].msgstr, u'Tree')
 
         untranslated_count = len(munged_pofile.untranslated_entries())
-        self.assertEqual(2, untranslated_count)
+        self.assertEqual(4, untranslated_count)
 
 
 class DiffTestCase(PoxxTestCase):

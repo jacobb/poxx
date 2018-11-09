@@ -21,6 +21,7 @@ import os.path
 import re
 import polib    # from http://bitbucket.org/izi/polib
 from html.parser import HTMLParser
+
 VERSION_STR = '2.0.0'
 
 
@@ -29,6 +30,10 @@ class HtmlAwareMessageMunger(HTMLParser):
     # Lifted from http://translate.sourceforge.net
     ORIGINAL = u"ABCDEFGHIJKLMNOPQRSTUVWXYZ" + u"abcdefghijklmnopqrstuvwxyz"
     REWRITE_UNICODE_MAP = u"ȦƁƇḒḖƑƓĦĪĴĶĿḾȠǾƤɊŘŞŦŬṼẆẊẎẐ" + u"ȧƀƈḓḗƒɠħīĵķŀḿƞǿƥɋřşŧŭṽẇẋẏẑ"
+
+    PLACEHOLDER_REGEX = re.compile(
+        r"((?:%(?:\(\w+\))?[-+]?[\d.]*[sfd])|(?:\{\w+[:]?[\d.]*[sfd]?\}))"
+    )
 
     def __init__(self):
         super().__init__()
@@ -77,7 +82,7 @@ class HtmlAwareMessageMunger(HTMLParser):
     def handle_data(self, data):
         # We don't want to munge placeholders, so split on them, keeping them
         # in the list, then xform every other token.
-        toks = re.split(r"((?:%(?:\(\w+\))?s)|(?:\{\w+\}))", data)
+        toks = self.PLACEHOLDER_REGEX.split(data)
         for i, tok in enumerate(toks):
             if i % 2:
                 self.s += tok
