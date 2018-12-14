@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 version = (1, 1, 1)
-VERSION_STR = '.'.join(str(v) for v in (1,1,0))
+VERSION_STR = '.'.join(str(v) for v in version)
 
 install_requires = [
     'polib',
