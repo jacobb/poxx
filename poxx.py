@@ -67,6 +67,8 @@ class HtmlAwareMessageMunger(HTMLParser):
             if name in ['alt', 'title']:
                 self.s += self.xform(val)
             else:
+                if val is None:
+                    val = ""
                 self.s += val
             self.s += '"'
         if closed:
